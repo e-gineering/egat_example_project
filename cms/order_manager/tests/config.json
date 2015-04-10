@@ -1,0 +1,15 @@
+{
+  "tests": [
+    "order_manager.tests.test_login"
+  ],
+  "configuration": {
+    "username": "admin",
+    "password": "admin",
+    "base_url": "http://localhost:8000/admin"
+  },
+  "environments": [
+    {
+      "browser": "Firefox"
+    }
+  ]
+}
