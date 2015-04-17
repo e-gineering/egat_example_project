@@ -1,6 +1,10 @@
 {
+  "options": {
+    "-l": "test_results",
+    "-t": 99
+  },
   "tests": [
-    "order_manager.tests.test_login"
+    "test_customers"
   ],
   "configuration": {
     "username": "admin",

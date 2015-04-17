@@ -4,6 +4,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from test_helpers import browser_helper
 
 @execution_group("cms.order_manager.tests.test_login.TestLogin")
 class TestLogin(testset.SequentialTestSet):
@@ -14,10 +15,7 @@ class TestLogin(testset.SequentialTestSet):
     def setup(self):
         # Instantiate the browser based on the 'browser' environment variable
         browser_type = self.environment.get('browser', '')
-        if browser_type == "Firefox":
-            self.browser = webdriver.Firefox()
-        else:
-            self.browser = webdriver.Firefox()
+        self.browser = browser_helper.get_browser(browser_type)
 
     def teardown(self):
         self.browser.quit()
@@ -33,6 +31,8 @@ class TestLogin(testset.SequentialTestSet):
         """
         Logs in as the default user and verifies redirection to the Django administration page.
         """
+        if self.environment['browser'] == "Chrome":
+            assert(False)
         username_input = self.browser.find_element_by_css_selector(self.USERNAME_SELECTOR)
         password_input = self.browser.find_element_by_css_selector(self.PASSWORD_SELECTOR)
         submit_button = self.browser.find_element_by_css_selector(self.SUBMIT_SELECTOR)
