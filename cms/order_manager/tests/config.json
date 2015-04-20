@@ -7,9 +7,15 @@
     "test_customers"
   ],
   "configuration": {
-    "username": "admin",
-    "password": "admin",
-    "base_url": "http://localhost:8000/admin"
+    "base_url": "http://localhost:8000",
+    "auth": {
+      "username": "admin",
+      "password": "admin"
+    },
+    "customer_tests": {
+      "first_name": "Jane",
+      "last_name": "Doe"
+    }
   },
   "environments": [
     {

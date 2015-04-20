@@ -2,6 +2,7 @@ from page_models.page_model import PageModel
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import re
 
 class CustomerIndex(PageModel):
     def open(self):
@@ -11,6 +12,15 @@ class CustomerIndex(PageModel):
     def get_customer_elements(self):
         """Returns a list of all the customer <a> elements on the page."""
         return self.browser.find_elements_by_css_selector("th[class~='field-__str__'] > a")
+
+    def id_for_customer_named(self, first_name, last_name):
+        """Takes a first and last name and returns the id of the first customer
+        found with that first and last name. Returns None if no customer is found."""
+        customer_regex = "([0-9]+) %s %s" % (first_name, last_name)
+        for customer_element in self.get_customer_elements():
+            match = re.match(customer_regex, customer_element.text)
+            if match:
+                return int(match.groups()[0])
 
 class CustomerCreate(PageModel):
     def open(self):
