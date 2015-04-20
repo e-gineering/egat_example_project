@@ -20,7 +20,7 @@ class CustomerIndex(PageModel):
         for customer_element in self.get_customer_elements():
             match = re.match(customer_regex, customer_element.text)
             if match:
-                return int(match.groups()[0])
+                return int(match.group(1))
 
 class CustomerCreate(PageModel):
     def open(self):
