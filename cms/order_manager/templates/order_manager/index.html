@@ -1,0 +1,38 @@
+<h1>Payment Processing</h1>
+<form action="process_payment/" method="post">
+    {% csrf_token %}
+    <fieldset>
+        {% if received_orders %}
+            <select name="order_id">
+                {% for order in received_orders %}
+                    <option value="{{ order.id }}">{{ order }}</option>
+                {% endfor %}
+            </select>
+        {% else %}
+            <p>No orders found.</p>
+        {% endif %}
+        <br />
+    </fieldset>
+    <fieldset>
+        <label>Card Type</label>
+        <select name="card_type">
+            <option value="visa">Visa</option>
+            <option value="mastercard">Mastercard</option>
+            <option value="discover">Discover</option>
+        </select>
+        <br />
+
+        <label>Card Number</label>
+        <input name="card_number" type="text"/>
+
+        <label>Expiration Date</label>
+        <input name="expiration" type="text"/>
+        <br />
+
+        <label>CCV</label>
+        <input name="ccv" type="text"/>
+        <br />
+    </fieldset>
+
+    <input type="submit" value="Submit Payment"/>
+</form>

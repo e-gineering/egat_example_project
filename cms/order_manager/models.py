@@ -42,3 +42,26 @@ class Order(models.Model):
 
     def __unicode__(self):
         return "%d %s for %s" % (self.quantity, self.product.name, self.customer.last_name)
+
+class Payment(models.Model):
+    STATUS_CHOICES = (
+        (1, 'Processing'),
+        (2, 'Processed'),
+    )
+    CARD_TYPES = (
+        ('visa', 'Visa'),
+        ('mast', 'Mastercard'),
+        ('disc', 'Discover'),
+    )
+    status = models.IntegerField(choices=STATUS_CHOICES, default=1)
+    order = models.ForeignKey(Order)
+    card_type = models.CharField(choices=CARD_TYPES, default='visa', max_length=40)
+    card_number = models.CharField(max_length=16)
+    expiration_date = models.CharField(max_length=7)
+    ccv = models.CharField(max_length=4)
+
+    def __str__(self):
+        return unicode(self).encode('utf-8')
+
+    def __unicode__(self):
+        return "Order %d - %s" % (self.order.id, self.get_status_display())
