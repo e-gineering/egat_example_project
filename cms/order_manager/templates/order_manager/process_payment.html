@@ -1,5 +1,6 @@
 <h1>Payment Processing</h1>
-<form action="process_payment/" method="post">
+<span id="flash-message">{{ message }}</span>
+<form action="" method="post">
     {% csrf_token %}
     <fieldset>
         {% if received_orders %}

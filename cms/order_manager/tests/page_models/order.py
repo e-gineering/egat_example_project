@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
+from test_helpers.selenium_helper import get_selected_option
 import re
 
 class OrderIndex(PageModel):
@@ -52,7 +53,16 @@ class OrderCreate(PageModel):
 class OrderEdit(PageModel):
     def open(self, order_id):
         """Takes a order id (as an int) and opens the "Change order" page for that order."""
-        self.browser.get("%s/admin/order_manager/order/%d" % (self.base_url, order_id))
+        self.browser.get("%s/admin/order_manager/order/%s" % (self.base_url, order_id))
+
+    def get_fields(self):
+        """Gets the values in the order's fields and returns them in a dictionary."""
+        return {
+            'status': int(get_selected_option(self.browser, "select#id_status")),
+            'customer_id': int(get_selected_option(self.browser, "select#id_customer")),
+            'product_id': int(get_selected_option(self.browser, "select#id_product")),
+            'quantity': self.browser.find_element_by_css_selector("input#id_quantity").get_attribute('value'),
+        }
 
     def change_fields(self, customer_id=None, product_id=None, quantity=None):
         """Takes variables that correspond to the fields on a Order and changes
