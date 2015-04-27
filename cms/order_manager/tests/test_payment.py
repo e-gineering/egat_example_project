@@ -16,6 +16,7 @@ class OrdersListResource(SharedResource): pass
 
 @execution_group("cms.order_manager.test_payment.TestPaymentProcessing")
 class TestPaymentProcessing(testset.SequentialTestSet):
+    @browser_helper.BrowserStartupResource.decorator
     def setup(self):
         self.browser = browser_helper.get_browser(self.environment.get('browser', ''))
         authentication_helper.authenticate(

@@ -61,7 +61,7 @@ class OrderEdit(PageModel):
             'status': int(get_selected_option(self.browser, "select#id_status")),
             'customer_id': int(get_selected_option(self.browser, "select#id_customer")),
             'product_id': int(get_selected_option(self.browser, "select#id_product")),
-            'quantity': self.browser.find_element_by_css_selector("input#id_quantity").get_attribute('value'),
+            'quantity': int(self.browser.find_element_by_css_selector("input#id_quantity").get_attribute('value')),
         }
 
     def change_fields(self, customer_id=None, product_id=None, quantity=None):

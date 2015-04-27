@@ -12,6 +12,7 @@ class TestLogin(testset.SequentialTestSet):
     PASSWORD_SELECTOR = "input[name='password']"
     SUBMIT_SELECTOR = "input[type='submit']"
 
+    @browser_helper.BrowserStartupResource.decorator
     def setup(self):
         # Instantiate the browser based on the 'browser' environment variable
         browser_type = self.environment.get('browser', '')

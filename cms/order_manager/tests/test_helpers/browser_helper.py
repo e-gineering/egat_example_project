@@ -1,4 +1,13 @@
 from selenium import webdriver
+from egat.shared_resource import SharedResource
+
+class BrowserStartupResource(SharedResource):
+    """
+    A Shared Resource that represents the opening of a browser. Various browsers on
+    various platforms have trouble starting up multiple instances of themselves
+    simultaneously.
+    """
+    pass
 
 class InvalidBrowserException(Exception):
     pass

@@ -1,12 +1,24 @@
 import egat.testset as testset
+from egat.shared_resource import SharedResource
 from egat.execution_groups import execution_group
 from test_helpers import authentication_helper
 from test_helpers import browser_helper
 from page_models.customer import CustomerIndex, CustomerCreate, CustomerEdit
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import re
+
+class CustomerCreationAndDeletionResource(SharedResource):
+    """
+    A SharedResource that represents creating or deleting an Order.
+    """
+    pass
 
 @execution_group("cms.order_manager.test_customers.TestCustomers")
 class TestCustomers(testset.SequentialTestSet):
+
+    @browser_helper.BrowserStartupResource.decorator
     def setup(self):
         self.browser = browser_helper.get_browser(self.environment.get('browser', ''))
         authentication_helper.authenticate(
@@ -16,7 +28,13 @@ class TestCustomers(testset.SequentialTestSet):
             self.configuration['auth']['password'],
         )
 
+    @CustomerCreationAndDeletionResource.decorator
     def testCreateCustomer(self):
+        # Count the number of customers before creation.
+        index_page = CustomerIndex(self.browser, self.configuration['base_url'])
+        index_page.open()
+        customers_before_creation = index_page.get_customer_elements()
+
         # Fill the form and submit it
         create_page = CustomerCreate(self.browser, self.configuration['base_url'])
         create_page.open()
@@ -26,58 +44,56 @@ class TestCustomers(testset.SequentialTestSet):
         create_page.submit_form()
 
         # Verify that customer was created
-        index_page = CustomerIndex(self.browser, self.configuration['base_url'])
-        customers = index_page.get_customer_elements()
+        customers_after_creation = index_page.get_customer_elements()
+        assert len(customers_after_creation) == len(customers_before_creation) + 1, \
+            "Could not find created customer."
+
         customer_pattern = "([0-9]+) %s %s" % (first_name, last_name)
-        customer_matcher = lambda e: re.match(customer_pattern, e.text)
-        assert(len(filter(customer_matcher, customers)) == 1)
+        match = re.match(customer_pattern, customers_after_creation[0].text)
+        assert match is not None, "Could not find created customer."
+
+        self.customer_id = index_page.id_for_customer_named(first_name, last_name)
 
     def testEditCustomer(self):
-        first_name = self.configuration['customer_tests']['first_name']
-        last_name = self.configuration['customer_tests']['last_name']
         alt_first_name = self.configuration['customer_tests']['alt_first_name']
-
-        # Get the id of our customer
-        index_page = CustomerIndex(self.browser, self.configuration['base_url'])
-        cust_id = index_page.id_for_customer_named(first_name, last_name)
 
         # Edit the customer's first name
         edit_page = CustomerEdit(self.browser, self.configuration['base_url'])
-        edit_page.open(cust_id)
+        edit_page.open(self.customer_id)
         edit_page.change_fields(first_name=alt_first_name)
         edit_page.save_changes()
 
         # Verify that the customer's first name was changed
-        index_page = CustomerIndex(self.browser, self.configuration['base_url'])
-        customers = index_page.get_customer_elements()
+        edit_page.open(self.customer_id)
+        fields = edit_page.get_fields()
+        assert fields['first_name'] == alt_first_name, \
+            "Could not verify that customer was edited."
 
-        # Old name should be gone
-        old_customer_pattern = "([0-9]+) %s %s" % (first_name, last_name)
-        old_customer_matcher = lambda e: re.match(old_customer_pattern, e.text)
-        assert(len(filter(old_customer_matcher, customers)) == 0)
 
-        # New name should be present
-        new_customer_pattern = "([0-9]+) %s %s" % (alt_first_name, last_name)
-        new_customer_matcher = lambda e: re.match(new_customer_pattern, e.text)
-        assert(len(filter(new_customer_matcher, customers)) == 1)
-
+    @CustomerCreationAndDeletionResource.decorator
     def testDeleteCustomer(self):
-        alt_first_name = self.configuration['customer_tests']['alt_first_name']
-        last_name = self.configuration['customer_tests']['last_name']
-
-        # Get the id of our customer
+        # Count the number of customers before creation.
         index_page = CustomerIndex(self.browser, self.configuration['base_url'])
-        cust_id = index_page.id_for_customer_named(alt_first_name, last_name)
+        index_page.open()
+        customers_before_deletion = index_page.get_customer_elements()
 
         # Delete the customer
         edit_page = CustomerEdit(self.browser, self.configuration['base_url'])
-        edit_page.open(cust_id)
+        edit_page.open(self.customer_id)
         edit_page.delete_customer()
 
+        # Wait for index page to load
+        WebDriverWait(self.browser, 20).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, "div#content > h1"),
+                "Select customer to change"
+            )
+        )
+
         # Verify that the customer is gone from the index page
-        customer_pattern = "%d %s %s" % (cust_id, alt_first_name, last_name)
-        customer_matcher = lambda e: re.match(customer_pattern, e.text)
-        assert(len(filter(customer_matcher, index_page.get_customer_elements())) == 0)
+        customers_after_deletion = index_page.get_customer_elements()
+        assert len(customers_after_deletion) == len(customers_before_deletion) - 1, \
+            "Could not verify that customer was deleted."
 
     def teardown(self):
         self.browser.quit()
