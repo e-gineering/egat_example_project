@@ -28,7 +28,7 @@ def process_payment(request):
             expiration_date=request.POST['expiration'],
             ccv=request.POST['ccv'],
         )
-        time.sleep(1) # Mock interfacing with payment processor
+        time.sleep(10) # Mock interfacing with payment processor
 
         # Payment processing has finished
         payment.status = 2
