@@ -1,39 +1,65 @@
-<h1>Payment Processing</h1>
-<span id="flash-message">{{ message }}</span>
-<form action="" method="post">
-    {% csrf_token %}
-    <fieldset>
-        {% if received_orders %}
-            <select name="order_id">
-                {% for order in received_orders %}
-                    <option value="{{ order.id }}">{{ order }}</option>
-                {% endfor %}
-            </select>
-        {% else %}
-            <p>No orders found.</p>
-        {% endif %}
-        <br />
-    </fieldset>
-    <fieldset>
-        <label>Card Type</label>
-        <select name="card_type">
-            <option value="visa">Visa</option>
-            <option value="mastercard">Mastercard</option>
-            <option value="discover">Discover</option>
-        </select>
-        <br />
-
-        <label>Card Number</label>
-        <input name="card_number" type="text"/>
-
-        <label>Expiration Date</label>
-        <input name="expiration" type="text"/>
-        <br />
-
-        <label>CCV</label>
-        <input name="ccv" type="text"/>
-        <br />
-    </fieldset>
-
-    <input type="submit" value="Submit Payment"/>
-</form>
+<head>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'order_manager/base.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'order_manager/forms.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'order_manager/djangocms-admin.css' %}" />
+</head>
+<body>
+    <div id="header">
+        <div id="branding">
+            <h1 id="site-name">
+                Order Manager
+            </h1>
+        </div>
+    </div>
+    <div id="container">
+        <div id="content">
+            <h1>Payment Processing</h1>
+            <div id="content-main">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div>
+                        <fieldset class="module aligned ">
+                            <div class="form-row">
+                                {% if received_orders %}
+                                <label class="required" for="order_id">Order:</label>
+                                <select name="order_id">
+                                    {% for order in received_orders %}
+                                    <option value="{{ order.id }}">{{ order }}</option>
+                                    {% endfor %}
+                                </select>
+                                {% else %}
+                                <p>No orders found.</p>
+                                {% endif %}
+                            </div>
+                            <div class="form-row">
+                                <label class="required" for="card_type">Card Type:</label>
+                                <select name="card_type">
+                                    <option value="visa">Visa</option>
+                                    <option value="mastercard">Mastercard</option>
+                                    <option value="discover">Discover</option>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <label class="required" for="card_number">Card Number:</label>
+                                <input name="card_number" type="text"/>
+                            </div>
+                            <div class="form-row">
+                                <label class="required" for="expiration">Expiration Date:</label>
+                                <input name="expiration" type="text"/>
+                            </div>
+                            <div class="form-row">
+                                <label class="required" for="ccv">CCV:</label>
+                                <input name="ccv" type="text"/>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="submit-row">
+                        <input type="submit" class="default" value="Submit Payment"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <span id="flash-message">{{ message }}</span>
+</body>
