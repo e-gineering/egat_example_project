@@ -1,0 +1,273 @@
+/* BEGIN: Styles from head section of results.html */
+
+body {
+    font-family: "Verdana";
+    font-size: 12pt;
+}
+.results-table {
+    border-collapse: collapse;
+    width: 1100px;
+}
+.totals-table {
+    border-collapse: collapse;
+}
+.totals-table td {
+    padding: 10px;
+    border: 1px solid black;
+}
+.results-table th {
+    border: 1px solid black;
+    padding: 15px;
+    background-color: rgb(240, 240, 240);
+    font-weight: 300;
+    font-size: 14pt;
+}
+.results-table tr {
+    border: 1px solid black;
+}
+.results-table td {
+    border: 1px solid black;
+    padding: 15px;
+}
+.class-header {
+    background-color: rgb(240, 240, 240);
+    font-family: "Verdana";
+    font-size: 14pt;
+}
+.environment-header {
+    background-color: rgb(240, 240, 240);
+    font-family: "Verdana";
+    font-size: 14pt;
+}
+.function-name {
+    font-family: "Andale Mono";
+    width: 670px;
+}
+.thread-num {
+    text-align: center;
+}
+.details-btn {
+    text-decoration: underline;
+    text-align: center;
+    background-color: rgb(240, 240, 240);
+    cursor: pointer;
+}
+.expand-collapse-btn {
+    text-decoration: none;
+    text-align: center;
+    background-color: rgb(240, 240, 240);
+    cursor: pointer;
+    font-family: "Courier New", "sans-serif";
+    font-size: 18pt;
+    min-width: 45px;
+}
+.details {
+    font-family: "Andale Mono";
+    font-size: 10pt;
+    width: 670px;
+}
+.success {
+    color: #276943;
+    border-color: #276943;
+    background-color: #95d7b2;
+    text-align: center;
+}
+.failure {
+    color: #671a10;
+    border-color: #671a10;
+    background-color: #e87a6a;
+    text-align: center;
+}
+.skipped {
+    color: #716d06;
+    border-color: #716d06;
+    background-color: #FFF692;
+    text-align: center;
+}
+.empty-total {
+    text-align: center;
+}
+.class-totals-container {
+    padding: 0px !important;
+    border-collapse: collapse !important;
+    background-color: rgb(240, 240, 240);
+}
+.class-totals-table td {
+    border-top: 0px solid black;
+    border-right: 0px solid black;
+    border-bottom: 0px solid black;
+    border-left: 0px solid black;
+    padding: 15px;
+}
+
+/* END: Styles from head section of results.html */
+
+
+
+/* BEGIN: Style tweaks added for V1 of app (CAF) */
+
+#header-image {
+    background: #dedede;
+    width: 1100px;
+    margin-bottom: 24px;
+}
+
+#header-image img {
+    margin: 10px;
+}
+
+.header {
+    margin-bottom: 12px;
+    width: 1100px;
+}
+
+.header h1 {
+    background: #f0f0f0;
+    font-size: 13pt;
+    margin: 0;
+    padding: 7px;
+}
+
+.header h3 {
+    background: #f8f8f8;
+    font-size: 11pt;
+    font-weight: normal;
+    margin: 0;
+    padding: 5px 7px;
+}
+
+table.results-table {
+    border-top: 1px solid #555;
+    border-bottom: 1px solid #555;
+    margin-bottom: 80px;
+}
+
+
+.results-table tr {
+    font-size: 10pt;
+}
+
+.results-table td,
+.results-table th {
+    border: 0;
+    padding: 8px;
+}
+
+.results-table tr:nth-child(1) th {
+    background: #444;
+    color: white;
+    font-size: 11pt;
+}
+
+.results-table tr th:nth-child(3) {
+    text-align: left;
+    width: 1100px;
+}
+
+.results-table tr th:nth-child(1), 
+.results-table tr th:nth-child(2), 
+.results-table tr th:nth-child(4), 
+.results-table tr th:nth-child(5), 
+.results-table tr th:nth-child(6) {
+    width: 0;
+}
+
+.results-table tr {
+    border: 0;
+}
+
+.results-table tr.class-header {
+    background: none;
+    border-top: 1px solid #555;
+    color: #009500;
+}
+
+.class-header span {
+    max-width: 780px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.success {
+    background: #009500;
+    color: white;
+}
+
+.skipped {
+    background: #dfa302;
+    color: white;
+}
+
+.failure {
+    background: #b00009;
+    color: white;
+}
+
+.results-table tr.class-header.skipped {
+    background: #fde893;
+    color: #bc8a00;
+}
+
+.results-table tr.class-header.failure {
+    background: #facabe;
+    color: #b00009;
+}
+
+.results-table tr.test-result {
+    border-top: 1px  dotted #bbb;
+    font-size:  9pt;
+}
+
+.results-table td.details {
+    background: #f8f8f8;
+    font-size: 9pt;
+}
+
+.function-name {
+    font-family: Verdana;
+}
+
+.expand-collapse-btn {
+    background: #f8f8f8;
+    color: #222;
+    font-size: 16pt;
+    min-width: 0;
+}
+
+.details-btn {
+    background: #f8f8f8;
+}
+
+.totals-table {
+    margin-bottom: -4px;
+}
+
+.totals-table,
+.totals-table td {
+    border: 0;
+}
+
+.totals-table td:nth-child(1) {
+    background: #dbedbb;
+    color: #009500;
+}
+
+.totals-table td:nth-child(3) {
+    background: #facabe;
+    color: #b00009;
+}
+
+.totals-table td:nth-child(5) {
+    background: #fde893;
+    color: #bc8a00;
+}
+
+.totals-table td:nth-child(2),
+.totals-table td:nth-child(4) {
+    border-right: 5px white solid;
+}
+
+/* END: Style tweaks added for V1 of app (CAF) */
+
+
+
