@@ -4,6 +4,7 @@
     "-l": "test_results"
   },
   "tests": [
+    "test_login",
     "test_orders",
     "test_payment",
     "test_customers"

@@ -1,0 +1,10 @@
+{
+  "tests": ["test_login"],
+  "configuration": {
+    "base_url": "http://localhost:8000",
+    "auth": {
+      "username": "admin",
+      "password": "admin"
+    }
+  }
+}

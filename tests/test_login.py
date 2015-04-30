@@ -25,27 +25,25 @@ class TestLogin(testset.SequentialTestSet):
         """
         Opens the Login page and verifies that the correct elements are present
         """
-        self.browser.get(self.configuration['base_url'] + "/login/")
+        self.browser.get(self.configuration['base_url'] + "/admin/login/")
         self.verify_login_page()
 
     def testLoginAction(self):
         """
         Logs in as the default user and verifies redirection to the Django administration page.
         """
-        if self.environment['browser'] == "Chrome":
-            assert(False)
         username_input = self.browser.find_element_by_css_selector(self.USERNAME_SELECTOR)
         password_input = self.browser.find_element_by_css_selector(self.PASSWORD_SELECTOR)
         submit_button = self.browser.find_element_by_css_selector(self.SUBMIT_SELECTOR)
 
-        username_input.send_keys(self.configuration['username'])
-        password_input.send_keys(self.configuration['password'])
+        username_input.send_keys(self.configuration['auth']['username'])
+        password_input.send_keys(self.configuration['auth']['password'])
         submit_button.click()
 
         WebDriverWait(self.browser, 20).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, "div#user-tools > strong"),
-                self.configuration['username']
+                self.configuration['auth']['username']
             )
         )
 
@@ -66,7 +64,7 @@ class TestLogin(testset.SequentialTestSet):
         """"
         Verifies that internal pages redirect to the login page
         """
-        self.browser.get(self.configuration['base_url'])
+        self.browser.get(self.configuration['base_url'] + "/admin")
         self.verify_login_page()
 
     def verify_login_page(self):
