@@ -8,9 +8,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-class OrderCreationAndDeletionResource(SharedResource):
+class OrderListResource(SharedResource):
     """
-    A SharedResource that represents creating or deleting an Order.
+    A SharedResource that represents anything that adds or removes items from the list
+    of Orders.
     """
     pass
 
@@ -26,7 +27,7 @@ class TestOrders(testset.SequentialTestSet):
             self.configuration['auth']['password'],
         )
 
-    @OrderCreationAndDeletionResource.decorator
+    @OrderListResource.decorator
     def testCreateOrder(self):
         status = self.configuration['order_tests']['status']
         customer_name = self.configuration['order_tests']['customer_name']
@@ -69,7 +70,7 @@ class TestOrders(testset.SequentialTestSet):
         fields = edit_page.get_fields()
         assert fields['quantity'] == alt_quantity, "Edit was not successfully saved."
 
-    @OrderCreationAndDeletionResource.decorator
+    @OrderListResource.decorator
     def testDeleteOrder(self):
         # Get a count of the orders before the deletion
         index_page = OrderIndex(self.browser, self.configuration['base_url'])

@@ -1,0 +1,22 @@
+{
+  "options": {
+    "-t": 2,
+    "-l": "test_results"
+  },
+  "tests": ["test_login"],
+  "configuration": {
+    "base_url": "http://localhost:8000",
+    "auth": {
+      "username": "admin",
+      "password": "admin"
+    }
+  },
+  "environments": [
+    {
+      "browser": "Firefox"
+    },
+    {
+      "browser": "Chrome"
+    }
+  ]
+}

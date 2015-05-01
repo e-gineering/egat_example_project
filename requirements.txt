@@ -1,5 +1,5 @@
 Django==1.8
 -e git://github.com/divio/djangocms-admin-style.git@e881c6b1a4d40beb23f4357a7b974649d1e80942#egg=djangocms_admin_style-master
-egat==0.9.16
+egat==0.9.17
 selenium==2.45.0
 wsgiref==0.1.2

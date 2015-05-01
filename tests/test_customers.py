@@ -9,9 +9,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import re
 
-class CustomerCreationAndDeletionResource(SharedResource):
+class CustomerListResource(SharedResource):
     """
-    A SharedResource that represents creating or deleting an Order.
+    A SharedResource that represents anything that adds or removes items from the list
+    of Customers.
     """
     pass
 
@@ -28,7 +29,7 @@ class TestCustomers(testset.SequentialTestSet):
             self.configuration['auth']['password'],
         )
 
-    @CustomerCreationAndDeletionResource.decorator
+    @CustomerListResource.decorator
     def testCreateCustomer(self):
         # Count the number of customers before creation.
         index_page = CustomerIndex(self.browser, self.configuration['base_url'])
@@ -70,7 +71,7 @@ class TestCustomers(testset.SequentialTestSet):
             "Could not verify that customer was edited."
 
 
-    @CustomerCreationAndDeletionResource.decorator
+    @CustomerListResource.decorator
     def testDeleteCustomer(self):
         # Count the number of customers before creation.
         index_page = CustomerIndex(self.browser, self.configuration['base_url'])
