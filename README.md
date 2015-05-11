@@ -1,12 +1,12 @@
-#Eg-AT Example Project
+#E-gAT Example Project
 
 This is an official example project to showcase the use of the
-[Eg-AT testing toolkit](https://github.com/egineering-llc/egat).
+[E-gAT testing toolkit](https://github.com/egineering-llc/egat).
 
-If you are looking for the [documentation](https://github.com/egineering-llc/egat/wiki) you can find it on the Eg-AT
+If you are looking for the [documentation](https://github.com/egineering-llc/egat/wiki) you can find it on the E-gAT
 wiki.
 
-If you are already familiar with the features of Eg-AT and want to see it in action, you have come to the right place.
+If you are already familiar with the features of E-gAT and want to see it in action, you have come to the right place.
 The [wiki](https://github.com/egineering-llc/egat_example_project/wiki) page is a great place to begin getting familiar
 with the project.
 
