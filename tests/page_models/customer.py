@@ -5,13 +5,13 @@ from selenium.webdriver.support import expected_conditions as EC
 import re
 
 class CustomerIndex(PageModel):
-    def open(self):
-        """Opens the Customer page."""
-        self.browser.get(self.base_url + "/admin/order_manager/customer/")
-
     def get_customer_elements(self):
         """Returns a list of all the customer <a> elements on the page."""
         return self.browser.find_elements_by_css_selector("th[class~='field-__str__'] > a")
+
+    def count_customers(self):
+        """Returns a count of all the customer <a> elements on the page."""
+        return len(self.get_customer_elements())
 
     def id_for_customer_named(self, first_name, last_name):
         """Takes a first and last name and returns the id of the first customer
@@ -23,10 +23,6 @@ class CustomerIndex(PageModel):
                 return int(match.group(1))
 
 class CustomerCreate(PageModel):
-    def open(self):
-        """Opens the Add Customer page."""
-        self.browser.get(self.base_url + "/admin/order_manager/customer/add/")
-
     def fill_form(self, first_name, last_name):
         """Takes a first and last name and fills out the Customer form."""
         # Find the input elements
@@ -37,12 +33,16 @@ class CustomerCreate(PageModel):
         last_name_box.send_keys(last_name)
 
     def submit_form(self):
+        """Submits the 'Create Customer Form' by clicking the '_save' button"""
         self.browser.find_element_by_css_selector("input[name='_save']").click()
 
 class CustomerEdit(PageModel):
-    def open(self, customer_id):
-        """Takes a customer id (as an int) and opens the "Change customer" page for that customer."""
-        self.browser.get("%s/admin/order_manager/customer/%d" % (self.base_url, customer_id))
+    def change_field_by_id(self, field_id, new_value):
+        """Finds an <input> element with id 'field_id' and changes its value to 'new_value'."""
+        if new_value is not None:
+            element = self.browser.find_element_by_css_selector("input#" + field_id)
+            element.clear()
+            element.send_keys(new_value)
 
     def change_fields(self, first_name=None, last_name=None):
         """Takes variables that correspond to the fields on a Customer and changes
@@ -56,6 +56,10 @@ class CustomerEdit(PageModel):
             last_name_box = self.browser.find_element_by_css_selector("input#id_last_name")
             last_name_box.clear()
             last_name_box.send_keys(last_name)
+
+    def get_field_by_id(self, field_id):
+        """Gets the value in the <input> field with id 'field_id' and returns it."""
+        return self.browser.find_element_by_css_selector("input#" + field_id).get_attribute('value')
 
     def get_fields(self):
         """Gets the values in the customer fields and returns them in a dictionary."""
