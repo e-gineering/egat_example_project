@@ -1,12 +1,9 @@
 from page_models.page_model import PageModel
 from selenium.webdriver.support.select import Select
 
+
 class ProcessPaymentPage(PageModel):
     ORDER_SELECT_SELECTOR = "select[name='order_id']"
-
-    def open(self):
-        """Opens the Payment Processing page."""
-        self.browser.get(self.base_url + "/order_manager/process_payment/")
 
     def get_orders(self):
         """Returns a list of dictionaries representing the choices in the Order

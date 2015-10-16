@@ -1,0 +1,32 @@
+{
+  "options": {
+    "-t": 2,
+    "-l": "test_results"
+  },
+  "tests": [
+    "test_payment"
+  ],
+  "configuration": {
+    "base_url": "http://localhost:8000",
+    "auth": {
+      "username": "admin",
+      "password": "admin"
+    },
+    "payment_tests": {
+      "card_type": "visa",
+      "card_number": "85838439219295821",
+      "expiration_date": "07/17",
+      "ccv": "890",
+      "success_message": "Payment processed successfully!"
+    }
+  },
+  "environments": [
+    {
+      "browser": "Firefox"
+    },
+    {
+      "browser": "Chrome"
+    }
+  ]
+}
+

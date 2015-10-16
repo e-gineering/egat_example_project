@@ -6,11 +6,8 @@ from selenium.webdriver.support.select import Select
 from test_helpers.selenium_helper import get_selected_option
 import re
 
-class OrderIndex(PageModel):
-    def open(self):
-        """Opens the Order page."""
-        self.browser.get(self.base_url + "/admin/order_manager/order/")
 
+class OrderIndex(PageModel):
     def get_order_elements(self):
         """Returns a list of all the order <a> elements on the page."""
         return self.browser.find_elements_by_css_selector("th[class~='field-__str__'] > a")
@@ -27,11 +24,8 @@ class OrderIndex(PageModel):
                 id_match = re.match(id_extractor, order_element.get_attribute("href"))
                 return int(id_match.group(1))
 
-class OrderCreate(PageModel):
-    def open(self):
-        """Opens the Add Order page."""
-        self.browser.get(self.base_url + "/admin/order_manager/order/add/")
 
+class OrderCreate(PageModel):
     def fill_form(self, customer_id, product_id, quantity, status_text=None):
         """Takes a customer id, a product id, and a quantity, and fills out the Order form."""
         # Find the input elements
@@ -50,11 +44,8 @@ class OrderCreate(PageModel):
     def submit_form(self):
         self.browser.find_element_by_css_selector("input[name='_save']").click()
 
-class OrderEdit(PageModel):
-    def open(self, order_id):
-        """Takes a order id (as an int) and opens the "Change order" page for that order."""
-        self.browser.get("%s/admin/order_manager/order/%s" % (self.base_url, order_id))
 
+class OrderEdit(PageModel):
     def get_fields(self):
         """Gets the values in the order's fields and returns them in a dictionary."""
         return {

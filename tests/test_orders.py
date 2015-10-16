@@ -36,18 +36,17 @@ class TestOrders(testset.SequentialTestSet):
         quantity = self.configuration['order_tests']['quantity']
 
         # Count the number of orders before order creation
-        index_page = OrderIndex(self.browser, self.configuration['base_url'])
-        index_page.open()
+        target_url = self.configuration['base_url'] + "/admin/order_manager/order/"
+        index_page = OrderIndex(self.browser, target_url)
         orders_before_creation = index_page.get_order_elements()
 
         # Fill the form and submit it
-        create_page = OrderCreate(self.browser, self.configuration['base_url'])
-        create_page.open()
+        target_url = self.configuration['base_url'] + "/admin/order_manager/order/add/"
+        create_page = OrderCreate(self.browser, target_url)
         create_page.fill_form(product_id, product_id, quantity, status)
         create_page.submit_form()
 
         # Verify that a new order was created
-        index_page = OrderIndex(self.browser, self.configuration['base_url'])
         orders_after_creation = index_page.get_order_elements()
         assert len(orders_after_creation) == len(orders_before_creation) + 1, \
             "Could not find created order on index page."
@@ -60,26 +59,26 @@ class TestOrders(testset.SequentialTestSet):
         alt_quantity = self.configuration['order_tests']['alt_quantity']
 
         # Edit the order's first name
-        edit_page = OrderEdit(self.browser, self.configuration['base_url'])
-        edit_page.open(self.order_id)
+        target_url = "%s/admin/order_manager/order/%s" % (self.configuration['base_url'], self.order_id)
+        edit_page = OrderEdit(self.browser, target_url)
         edit_page.change_fields(quantity=alt_quantity)
         edit_page.save_changes()
 
         # Verify that the changes were saved
-        edit_page.open(self.order_id)
+        edit_page.refresh()
         fields = edit_page.get_fields()
         assert fields['quantity'] == alt_quantity, "Edit was not successfully saved."
 
     @OrderListResource.decorator
     def testDeleteOrder(self):
         # Get a count of the orders before the deletion
-        index_page = OrderIndex(self.browser, self.configuration['base_url'])
-        index_page.open()
+        target_url = self.configuration['base_url'] + "/admin/order_manager/order/"
+        index_page = OrderIndex(self.browser, target_url)
         orders_before_deletion = index_page.get_order_elements()
 
         # Delete the order
-        edit_page = OrderEdit(self.browser, self.configuration['base_url'])
-        edit_page.open(self.order_id)
+        target_url = "%s/admin/order_manager/order/%s" % (self.configuration['base_url'], self.order_id)
+        edit_page = OrderEdit(self.browser, target_url)
         edit_page.delete_order()
 
         # Wait for index page to load

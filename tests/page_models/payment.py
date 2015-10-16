@@ -5,11 +5,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from test_helpers.selenium_helper import get_selected_option
 import re
 
-class PaymentIndex(PageModel):
-    def open(self):
-        """Opens the Payment index page."""
-        self.browser.get(self.base_url + "/admin/order_manager/payment/")
 
+class PaymentIndex(PageModel):
     def get_payment_elements(self):
         """Returns a list of all the payment <a> elements on the page."""
         return self.browser.find_elements_by_css_selector("th[class~='field-__str__'] > a")
@@ -25,11 +22,8 @@ class PaymentIndex(PageModel):
                 id_match = re.match(id_extractor, payment_element.get_attribute("href"))
                 return int(id_match.group(1))
 
-class PaymentEdit(PageModel):
-    def open(self, payment_id):
-        """Takes a payment id (as an int) and opens the "Change payment" page for that payment."""
-        self.browser.get("%s/admin/order_manager/payment/%s" % (self.base_url, payment_id))
 
+class PaymentEdit(PageModel):
     def get_fields(self):
         """Gets the values in the payment fields and returns them in a dictionary."""
 
@@ -38,7 +32,8 @@ class PaymentEdit(PageModel):
             'order': int(get_selected_option(self.browser, "select#id_order")),
             'card_type': get_selected_option(self.browser, "select#id_card_type"),
             'card_number': self.browser.find_element_by_css_selector("input#id_card_number").get_attribute("value"),
-            'expiration_date': self.browser.find_element_by_css_selector("input#id_expiration_date").get_attribute("value"),
+            'expiration_date': self.browser.find_element_by_css_selector("input#id_expiration_date").get_attribute(
+                "value"),
             'ccv': self.browser.find_element_by_css_selector("input#id_ccv").get_attribute("value"),
         }
 

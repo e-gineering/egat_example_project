@@ -30,8 +30,8 @@ class TestPaymentProcessing(testset.SequentialTestSet):
         self.browser.quit()
 
     def test_open_payment_page(self):
-        self.page = ProcessPaymentPage(self.browser, self.configuration['base_url'])
-        self.page.open()
+        target_url = self.configuration['base_url'] + "/order_manager/process_payment/"
+        self.page = ProcessPaymentPage(self.browser, target_url)
 
     @OrdersListResource.decorator
     def test_submit_payment(self):
@@ -39,7 +39,8 @@ class TestPaymentProcessing(testset.SequentialTestSet):
 
         # Pick the first order in the select box
         orders = self.page.get_orders()
-        assert len(orders) > 0, "Need at least 1 valid order to run tests."
+        self.validate((len(orders) > 0),
+                      error_message="Need at least 1 valid order to run tests.")
         self.order_id = orders[0]['id']
 
         # Fill the form
@@ -62,24 +63,27 @@ class TestPaymentProcessing(testset.SequentialTestSet):
             )
         )
         message_element = self.browser.find_element_by_id("flash-message")
-        assert message_element.text == self.configuration['payment_tests']['success_message']
+        self.validate(message_element.text == self.configuration['payment_tests']['success_message'])
 
     def test_order_status_changed(self):
-        page = OrderEdit(self.browser, self.configuration['base_url'])
-        page.open(self.order_id)
-        fields = page.get_fields()
-        assert fields['status'] == 2, "Order status was not changed to 'Payment Received'. %s" % fields['status']
+        target_url = "%s/admin/order_manager/order/%s" % (self.configuration['base_url'], self.order_id)
+        order_edit_page = OrderEdit(self.browser, target_url)
+        fields = order_edit_page.get_fields()
+        self.validate((fields['status'] == 2),
+                      error_message="Order status was not changed to 'Payment Received'. %s" % fields['status'])
 
     def test_payment_created(self):
         # Get the id of the order we created
-        index_page = PaymentIndex(self.browser, self.configuration['base_url'])
-        index_page.open()
+        target_url = self.configuration['base_url'] + "/admin/order_manager/payment/"
+        index_page = PaymentIndex(self.browser, target_url)
         payment_id = index_page.id_for_payment(self.order_id)
-        assert payment_id != None, "Could not find a Payment."
+        self.validate((payment_id is not None),
+                      error_message="Could not find a Payment.")
 
         # Check that the status is correct
-        edit_page = PaymentEdit(self.browser, self.configuration['base_url'])
-        edit_page.open(payment_id)
+        target_url = "%s/admin/order_manager/payment/%s" % (self.configuration['base_url'], payment_id)
+        edit_page = PaymentEdit(self.browser, target_url)
         payment = edit_page.get_fields()
 
-        assert payment['status'] == 2, "Payment status is not 'Processed'"
+        self.validate((payment['status'] == 2),
+                      error_message="Payment status is not 'Processed'")
