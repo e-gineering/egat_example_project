@@ -22,6 +22,7 @@ class CustomerIndex(PageModel):
             if match:
                 return int(match.group(1))
 
+
 class CustomerCreate(PageModel):
     def fill_form(self, first_name, last_name):
         """Takes a first and last name and fills out the Customer form."""
@@ -36,14 +37,8 @@ class CustomerCreate(PageModel):
         """Submits the 'Create Customer Form' by clicking the '_save' button"""
         self.browser.find_element_by_css_selector("input[name='_save']").click()
 
-class CustomerEdit(PageModel):
-    def change_field_by_id(self, field_id, new_value):
-        """Finds an <input> element with id 'field_id' and changes its value to 'new_value'."""
-        if new_value is not None:
-            element = self.browser.find_element_by_css_selector("input#" + field_id)
-            element.clear()
-            element.send_keys(new_value)
 
+class CustomerEdit(PageModel):
     def change_fields(self, first_name=None, last_name=None):
         """Takes variables that correspond to the fields on a Customer and changes
         the existing values to the given ones. All fields that are not passed to
@@ -57,7 +52,7 @@ class CustomerEdit(PageModel):
             last_name_box.clear()
             last_name_box.send_keys(last_name)
 
-    def get_field_by_id(self, field_id):
+    def get_input_field_by_id(self, field_id):
         """Gets the value in the <input> field with id 'field_id' and returns it."""
         return self.browser.find_element_by_css_selector("input#" + field_id).get_attribute('value')
 

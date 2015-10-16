@@ -12,6 +12,10 @@ class OrderIndex(PageModel):
         """Returns a list of all the order <a> elements on the page."""
         return self.browser.find_elements_by_css_selector("th[class~='field-__str__'] > a")
 
+    def count_orders(self):
+        """Returns a count of all the order <a> elements on the page."""
+        return len(self.get_order_elements())
+
     def id_for_order(self, quantity, product_name, last_name):
         """Takes a product name and a customer last name and returns the id of the
         first order found matching those parameters. Returns None if no order is

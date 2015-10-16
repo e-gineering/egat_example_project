@@ -38,7 +38,7 @@ class TestOrders(testset.SequentialTestSet):
         # Count the number of orders before order creation
         target_url = self.configuration['base_url'] + "/admin/order_manager/order/"
         index_page = OrderIndex(self.browser, target_url)
-        orders_before_creation = index_page.get_order_elements()
+        num_orders_before_creation = index_page.count_orders()
 
         # Fill the form and submit it
         target_url = self.configuration['base_url'] + "/admin/order_manager/order/add/"
@@ -48,10 +48,10 @@ class TestOrders(testset.SequentialTestSet):
 
         # Verify that a new order was created
         orders_after_creation = index_page.get_order_elements()
-        assert len(orders_after_creation) == len(orders_before_creation) + 1, \
-            "Could not find created order on index page."
-        assert orders_after_creation[0].text == "%d %s for %s" % (quantity, product_name, customer_name), \
-            "Could not find created order on index page."
+        self.validate((len(orders_after_creation) == num_orders_before_creation + 1),
+                      error_message="Could not find created order on index page.")
+        self.validate((orders_after_creation[0].text == "%d %s for %s" % (quantity, product_name, customer_name)),
+                      error_message="Could not find created order on index page.")
 
         self.order_id = index_page.id_for_order(quantity, product_name, customer_name)
 
@@ -61,20 +61,20 @@ class TestOrders(testset.SequentialTestSet):
         # Edit the order's first name
         target_url = "%s/admin/order_manager/order/%s" % (self.configuration['base_url'], self.order_id)
         edit_page = OrderEdit(self.browser, target_url)
-        edit_page.change_fields(quantity=alt_quantity)
+        edit_page.change_input_field_by_id(field_id='id_quantity', new_value=alt_quantity)
         edit_page.save_changes()
 
         # Verify that the changes were saved
         edit_page.refresh()
         fields = edit_page.get_fields()
-        assert fields['quantity'] == alt_quantity, "Edit was not successfully saved."
+        self.validate((fields['quantity'] == alt_quantity), "Edit was not successfully saved.")
 
     @OrderListResource.decorator
     def testDeleteOrder(self):
         # Get a count of the orders before the deletion
         target_url = self.configuration['base_url'] + "/admin/order_manager/order/"
         index_page = OrderIndex(self.browser, target_url)
-        orders_before_deletion = index_page.get_order_elements()
+        num_orders_before_deletion = index_page.count_orders()
 
         # Delete the order
         target_url = "%s/admin/order_manager/order/%s" % (self.configuration['base_url'], self.order_id)
@@ -82,16 +82,13 @@ class TestOrders(testset.SequentialTestSet):
         edit_page.delete_order()
 
         # Wait for index page to load
-        WebDriverWait(self.browser, 20).until(
-            EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "div#content > h1"),
-                "Select order to change"
-            )
-        )
+        edit_page.wait_for_text_to_load_in_element(css_selector="div#content > h1",
+                                                   text_to_match_against="Select order to change")
 
+        num_orders_after_deletion = index_page.count_orders()
         # Verify that the order is gone from the index page
-        assert len(index_page.get_order_elements()) == len(orders_before_deletion) - 1, \
-            "Could not verify that order was deleted."
+        self.validate((num_orders_after_deletion == num_orders_before_deletion - 1),
+                      error_message="Could not verify that order was deleted.")
 
     def teardown(self):
         self.browser.quit()

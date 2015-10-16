@@ -57,20 +57,16 @@ class TestPaymentProcessing(testset.SequentialTestSet):
 
     def test_success_message(self):
         # Check the flash message
-        WebDriverWait(self.browser, 15).until(
-            EC.presence_of_element_located(
-                (By.ID, "flash-message")
-            )
-        )
+        self.page.wait_for_presence_of_element(element_id="flash-message", max_wait_in_seconds=15)
         message_element = self.browser.find_element_by_id("flash-message")
         self.validate(message_element.text == self.configuration['payment_tests']['success_message'])
 
     def test_order_status_changed(self):
         target_url = "%s/admin/order_manager/order/%s" % (self.configuration['base_url'], self.order_id)
         order_edit_page = OrderEdit(self.browser, target_url)
-        fields = order_edit_page.get_fields()
-        self.validate((fields['status'] == 2),
-                      error_message="Order status was not changed to 'Payment Received'. %s" % fields['status'])
+        order_fields = order_edit_page.get_fields()
+        self.validate((order_fields['status'] == 2),
+                      error_message="Order status was not changed to 'Payment Received'. %s" % order_fields['status'])
 
     def test_payment_created(self):
         # Get the id of the order we created
@@ -83,7 +79,6 @@ class TestPaymentProcessing(testset.SequentialTestSet):
         # Check that the status is correct
         target_url = "%s/admin/order_manager/payment/%s" % (self.configuration['base_url'], payment_id)
         edit_page = PaymentEdit(self.browser, target_url)
-        payment = edit_page.get_fields()
-
-        self.validate((payment['status'] == 2),
+        payment_fields = edit_page.get_fields()
+        self.validate((payment_fields['status'] == 2),
                       error_message="Payment status is not 'Processed'")

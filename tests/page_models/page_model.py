@@ -28,3 +28,19 @@ class PageModel():
                 text_to_match_against
             )
         )
+
+    def wait_for_presence_of_element(self, element_id, max_wait_in_seconds=20):
+        """Attempts to locate an element with id 'element_id' for a max of 'max_wait_seconds'."""
+        # Wait for page to load
+        WebDriverWait(self.browser, max_wait_in_seconds).until(
+            EC.presence_of_element_located(
+                (By.ID, element_id)
+            )
+        )
+
+    def change_input_field_by_id(self, field_id, new_value):
+        """Finds an <input> element with id 'field_id' and changes its value to 'new_value'."""
+        if new_value is not None:
+            element = self.browser.find_element_by_css_selector("input#" + field_id)
+            element.clear()
+            element.send_keys(new_value)

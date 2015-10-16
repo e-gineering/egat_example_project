@@ -62,12 +62,12 @@ class TestCustomers(testset.SequentialTestSet):
         target_url = "%s/admin/order_manager/customer/%d" % (self.configuration['base_url'],
                                                              self.customer_id)
         edit_page = CustomerEdit(self.browser, target_url)
-        edit_page.change_field_by_id(field_id='id_first_name', new_value=alt_first_name)
+        edit_page.change_input_field_by_id(field_id='id_first_name', new_value=alt_first_name)
         edit_page.save_changes()
 
         # Verify that the customer's first name was changed
         edit_page.refresh()
-        first_name = edit_page.get_field_by_id('id_first_name')
+        first_name = edit_page.get_input_field_by_id('id_first_name')
         self.validate((first_name == alt_first_name),
                       error_message="Could not verify that customer was edited.")
 
@@ -90,7 +90,6 @@ class TestCustomers(testset.SequentialTestSet):
 
         # Verify that the customer is gone from the index page
         num_customers_after_deletion = index_page.count_customers()
-
         self.validate((num_customers_after_deletion == num_customers_before_deletion - 1),
                       error_message="Could not verify that customer was deleted.")
 

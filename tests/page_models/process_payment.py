@@ -1,5 +1,6 @@
 from page_models.page_model import PageModel
 from selenium.webdriver.support.select import Select
+from selenium.common.exceptions import NoSuchElementException
 
 
 class ProcessPaymentPage(PageModel):
@@ -13,9 +14,13 @@ class ProcessPaymentPage(PageModel):
                 "name": str,
             }
         """
-        select = Select(self.browser.find_element_by_css_selector(self.ORDER_SELECT_SELECTOR))
-        dict_extractor = lambda o: {'id': o.get_attribute('value'), 'name': o.text}
-        return map(dict_extractor, select.options)
+        try:
+            select = Select(self.browser.find_element_by_css_selector(self.ORDER_SELECT_SELECTOR))
+            dict_extractor = lambda o: {'id': o.get_attribute('value'), 'name': o.text}
+            return map(dict_extractor, select.options)
+        except NoSuchElementException:
+            # If element cannot be found, return an empty dictionary.
+            return dict()
 
     def fill_form(self, order_id=None, card_type=None,
                   card_number=None, exp_date=None, ccv=None):
