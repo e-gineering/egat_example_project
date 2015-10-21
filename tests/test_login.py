@@ -48,6 +48,6 @@ class TestLogin(testset.SequentialTestSet):
         self.verify_login_page(login_page)
 
     def verify_login_page(self, login_page):
-        login_page.wait_for_presence_of_element(css_selector="input[name='username']")
-        login_page.wait_for_presence_of_element(css_selector="input[name='password']")
-        login_page.wait_for_presence_of_element(css_selector="input[type='submit']")
+        login_page.wait_for_presence_of_element_by_css(css_selector="input[name='username']")
+        login_page.wait_for_presence_of_element_by_css(css_selector="input[name='password']")
+        login_page.wait_for_presence_of_element_by_css(css_selector="input[type='submit']")

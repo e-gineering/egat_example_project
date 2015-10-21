@@ -29,7 +29,7 @@ class PageModel():
             )
         )
 
-    def wait_for_presence_of_element(self, element_id, max_wait_in_seconds=20):
+    def wait_for_presence_of_element_by_id(self, element_id, max_wait_in_seconds=20):
         """Attempts to locate an element with id 'element_id' for a max of 'max_wait_seconds'."""
         # Wait for page to load
         WebDriverWait(self.browser, max_wait_in_seconds).until(
@@ -38,7 +38,7 @@ class PageModel():
             )
         )
 
-    def wait_for_presence_of_element(self, css_selector, max_wait_in_seconds=20):
+    def wait_for_presence_of_element_by_css(self, css_selector, max_wait_in_seconds=20):
         """Attempts to locate an element via 'css_selector' for a max of 'max_wait_seconds'."""
         # Wait for page to load
         WebDriverWait(self.browser, max_wait_in_seconds).until(

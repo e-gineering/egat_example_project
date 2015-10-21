@@ -54,7 +54,7 @@ class TestPaymentProcessing(testset.SequentialTestSet):
 
     def test_success_message(self):
         # Check the flash message
-        self.page.wait_for_presence_of_element(element_id="flash-message", max_wait_in_seconds=15)
+        self.page.wait_for_presence_of_element_by_id(element_id="flash-message", max_wait_in_seconds=15)
         message_element = self.browser.find_element_by_id("flash-message")
         self.validate(message_element.text == self.configuration['payment_tests']['success_message'])
 
