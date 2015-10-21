@@ -13,6 +13,7 @@ class CustomerListResource(SharedResource):
     """
     pass
 
+
 @execution_group("cms.order_manager.test_customers.TestCustomers")
 class TestCustomers(testset.SequentialTestSet):
 
@@ -86,7 +87,7 @@ class TestCustomers(testset.SequentialTestSet):
         edit_page.delete_customer()
 
         edit_page.wait_for_text_to_load_in_element(css_selector="div#content > h1",
-                                                   text_to_match_against="Select customer to change")
+                                                   text_to_wait_for="Select customer to change")
 
         # Verify that the customer is gone from the index page
         num_customers_after_deletion = index_page.count_customers()

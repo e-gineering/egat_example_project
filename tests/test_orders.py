@@ -4,9 +4,7 @@ from egat.execution_groups import execution_group
 from test_helpers import authentication_helper
 from test_helpers import browser_helper
 from page_models.order import OrderIndex, OrderCreate, OrderEdit
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+
 
 class OrderListResource(SharedResource):
     """
@@ -83,7 +81,7 @@ class TestOrders(testset.SequentialTestSet):
 
         # Wait for index page to load
         edit_page.wait_for_text_to_load_in_element(css_selector="div#content > h1",
-                                                   text_to_match_against="Select order to change")
+                                                   text_to_wait_for="Select order to change")
 
         num_orders_after_deletion = index_page.count_orders()
         # Verify that the order is gone from the index page

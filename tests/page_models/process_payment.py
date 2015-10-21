@@ -1,4 +1,4 @@
-from page_models.page_model import PageModel
+from page_model import PageModel
 from selenium.webdriver.support.select import Select
 from selenium.common.exceptions import NoSuchElementException
 

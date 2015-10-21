@@ -1,18 +1,15 @@
 import egat.testset as testset
 from egat.execution_groups import execution_group
 from egat.shared_resource import SharedResource
-
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-
 from test_helpers import authentication_helper
 from test_helpers import browser_helper
 from page_models.process_payment import ProcessPaymentPage
 from page_models.payment import PaymentEdit, PaymentIndex
 from page_models.order import OrderEdit
 
+
 class OrdersListResource(SharedResource): pass
+
 
 @execution_group("cms.order_manager.test_payment.TestPaymentProcessing")
 class TestPaymentProcessing(testset.SequentialTestSet):
