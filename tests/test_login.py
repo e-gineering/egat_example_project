@@ -1,22 +1,15 @@
 import egat.testset as testset
 from egat.execution_groups import execution_group
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from test_helpers import browser_helper
+from page_models.login import LoginIndex
 
 
 @execution_group("cms.order_manager.tests.test_login.TestLogin")
 class TestLogin(testset.SequentialTestSet):
-    USERNAME_SELECTOR = "input[name='username']"
-    PASSWORD_SELECTOR = "input[name='password']"
-    SUBMIT_SELECTOR = "input[type='submit']"
-
     @browser_helper.BrowserStartupResource.decorator
     def setup(self):
         # Instantiate the browser based on the 'browser' environment variable
-        browser_type = self.environment.get('browser', '')
-        self.browser = browser_helper.get_browser(browser_type)
+        self.browser = browser_helper.get_browser(browser_name=self.environment.get('browser', ''))
 
     def teardown(self):
         self.browser.quit()
@@ -25,61 +18,36 @@ class TestLogin(testset.SequentialTestSet):
         """
         Opens the Login page and verifies that the correct elements are present
         """
-        self.browser.get(self.configuration['base_url'] + "/admin/login/")
-        self.verify_login_page()
+        target_url = self.configuration['base_url'] + "/admin/login/"
+        self.index_page = LoginIndex(self.browser, target_url)
+        self.verify_login_page(self.index_page)
 
     def testLoginAction(self):
         """
         Logs in as the default user and verifies redirection to the Django administration page.
         """
-        username_input = self.browser.find_element_by_css_selector(self.USERNAME_SELECTOR)
-        password_input = self.browser.find_element_by_css_selector(self.PASSWORD_SELECTOR)
-        submit_button = self.browser.find_element_by_css_selector(self.SUBMIT_SELECTOR)
-
-        username_input.send_keys(self.configuration['auth']['username'])
-        password_input.send_keys(self.configuration['auth']['password'])
-        submit_button.click()
-
-        WebDriverWait(self.browser, 20).until(
-            EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "div#user-tools > strong"),
-                self.configuration['auth']['username']
-            )
-        )
+        self.index_page.fill_login_form(self.configuration['auth']['username'], self.configuration['auth']['password'])
+        self.index_page.submit_login_form()
+        self.index_page.wait_for_text_to_load_in_element(css_selector="div#user-tools > strong",
+                                                         text_to_wait_for=self.configuration['auth']['username'])
 
     def testLogoutAction(self):
         """
         Logs the user out and verifies that the logout page is shown
         """
-
-        self.browser.find_element_by_link_text("Log out").click()
-        WebDriverWait(self.browser, 20).until(
-            EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "div#content > h1"),
-                "Logged out"
-            )
-        )
+        self.index_page.logout()
+        self.index_page.wait_for_text_to_load_in_element(css_selector="div#content > h1",
+                                                         text_to_wait_for="Logged out")
 
     def testLoggedOut(self):
         """"
         Verifies that internal pages redirect to the login page
         """
-        self.browser.get(self.configuration['base_url'] + "/admin")
-        self.verify_login_page()
+        target_url = self.configuration['base_url'] + "/admin"
+        login_page = LoginIndex(self.browser, target_url)
+        self.verify_login_page(login_page)
 
-    def verify_login_page(self):
-        WebDriverWait(self.browser, 20).until(
-            EC.presence_of_element_located(
-                (By.CSS_SELECTOR, self.USERNAME_SELECTOR)
-            )
-        )
-        WebDriverWait(self.browser, 20).until(
-            EC.presence_of_element_located(
-                (By.CSS_SELECTOR, self.PASSWORD_SELECTOR)
-            )
-        )
-        WebDriverWait(self.browser, 20).until(
-            EC.presence_of_element_located(
-                (By.CSS_SELECTOR, self.SUBMIT_SELECTOR)
-            )
-        )
+    def verify_login_page(self, login_page):
+        login_page.wait_for_presence_of_element(css_selector="input[name='username']")
+        login_page.wait_for_presence_of_element(css_selector="input[name='password']")
+        login_page.wait_for_presence_of_element(css_selector="input[type='submit']")

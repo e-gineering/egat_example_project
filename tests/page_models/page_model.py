@@ -38,6 +38,15 @@ class PageModel():
             )
         )
 
+    def wait_for_presence_of_element(self, css_selector, max_wait_in_seconds=20):
+        """Attempts to locate an element via 'css_selector' for a max of 'max_wait_seconds'."""
+        # Wait for page to load
+        WebDriverWait(self.browser, max_wait_in_seconds).until(
+            EC.presence_of_element_located(
+                (By.CSS_SELECTOR, css_selector)
+            )
+        )
+
     def change_input_field_by_id(self, field_id, new_value):
         """Finds an <input> element with id 'field_id' and changes its value to 'new_value'."""
         if new_value is not None:
