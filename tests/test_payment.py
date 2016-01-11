@@ -15,7 +15,7 @@ class OrdersListResource(SharedResource): pass
 class TestPaymentProcessing(testset.SequentialTestSet):
     @browser_helper.BrowserStartupResource.decorator
     def setup(self):
-        self.browser = browser_helper.get_browser(self.environment.get('browser', ''))
+        self.browser = browser_helper.get_browser(self.environment)
         authentication_helper.authenticate(
             self.browser,
             self.configuration['base_url'],

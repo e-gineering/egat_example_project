@@ -1,0 +1,78 @@
+{
+  "options": {
+    "-t": 8,
+    "-l": "test_results"
+  },
+  "tests": [
+    "test_login",
+    "test_orders",
+    "test_payment",
+    "test_customers"
+  ],
+  "configuration": {
+    "base_url": "http://localhost:8000",
+    "auth": {
+      "username": "admin",
+      "password": "admin"
+    },
+    "customer_tests": {
+      "first_name": "Jane",
+      "last_name": "Doe",
+      "alt_first_name": "James"
+    },
+    "order_tests": {
+      "status": "Order Received",
+      "customer_id": 2,
+      "customer_name": "Fisher",
+      "product_id": 2,
+      "product_name": "Blue Shirt",
+      "quantity": 4,
+      "alt_quantity": 5
+    },
+    "payment_tests": {
+      "card_type": "visa",
+      "card_number": "85838439219295821",
+      "expiration_date": "07/17",
+      "ccv": "890",
+      "success_message": "Payment processed successfully!"
+    }
+  },
+  "environments": [
+        {
+             "browser_location": "browserstack",
+            "browser": "Chrome",
+            "browser_version": 38,
+            "os": "Windows",
+            "os_version": "xp",
+            "userName": "browserStackUserName",
+            "key": "browserStackKey"
+        },
+        {
+            "browser_location": "browserstack",
+            "browser": "Firefox",
+            "browser_version": 22,
+            "os": "OS X",
+            "os_version": "Yosemite",
+            "userName": "browserStackUserName",
+            "key": "browserStackKey"
+        },
+        {
+            "browser_location": "browserstack",
+            "browser": "Safari",
+            "browser_version": 9.0,
+            "os": "OS X",
+            "os_version": "El Capitan",
+            "userName": "browserStackUserName",
+            "key": "browserStackKey"
+        },
+        {
+            "browser_location": "browserstack",
+            "browser": "IE",
+            "browser_version": 11.0,
+            "os": "Windows",
+            "os_version": "10",
+            "userName": "browserStackUserName",
+            "key": "browserStackKey"
+        }
+  ]
+}

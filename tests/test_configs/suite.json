@@ -39,10 +39,12 @@
   },
   "environments": [
     {
-      "browser": "Firefox"
+        "browser_location": "local",
+        "browser": "Firefox"
     },
     {
-      "browser": "Chrome"
+        "browser_location": "local",
+        "browser": "Chrome"
     }
   ]
 }
