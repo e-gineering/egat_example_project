@@ -9,7 +9,7 @@ class TestLogin(testset.SequentialTestSet):
     @browser_helper.BrowserStartupResource.decorator
     def setup(self):
         # Instantiate the browser based on the 'browser' environment variable
-        self.browser = browser_helper.get_browser(browser_name=self.environment)
+        self.browser = browser_helper.get_browser(self.environment)
 
     def teardown(self):
         self.browser.quit()
