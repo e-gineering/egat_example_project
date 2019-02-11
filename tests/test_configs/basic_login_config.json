@@ -6,5 +6,11 @@
       "username": "admin",
       "password": "admin"
     }
-  }
+  },
+  "environments": [
+    {
+        "browser_location": "local",
+        "browser": "Chrome"
+    }
+  ]
 }
