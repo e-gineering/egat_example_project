@@ -14,10 +14,6 @@
   "environments": [
     {
         "browser_location": "local",
-        "browser": "Firefox"
-    },
-    {
-        "browser_location": "local",
         "browser": "Chrome"
     }
   ]

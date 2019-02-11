@@ -3,3 +3,5 @@ env
 .DS_Store
 *.pyc
 cms/db.sqlite3
+geckodriver.log
+ghostdriver.log
