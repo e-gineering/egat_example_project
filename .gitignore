@@ -4,3 +4,4 @@ env
 *.pyc
 cms/db.sqlite3
 geckodriver.log
+ghostdriver.log
