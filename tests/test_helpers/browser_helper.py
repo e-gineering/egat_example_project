@@ -47,6 +47,6 @@ def get_browser(environment):
         elif environment.get('browser', '') == "PhantomJS":
             return webdriver.PhantomJS()
         elif environment.get('browser', '') == "Safari":
-            return webdriver.Safari
+            return webdriver.Safari()
         else:
             return webdriver.Firefox()
