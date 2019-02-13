@@ -29,7 +29,7 @@ class TestLogin(testset.SequentialTestSet):
         self.index_page.fill_login_form(self.configuration['auth']['username'], self.configuration['auth']['password'])
         self.index_page.submit_login_form()
         self.index_page.wait_for_text_to_load_in_element(css_selector="div#user-tools > strong",
-                                                         text_to_wait_for=self.configuration['auth']['username'])
+                                                    text_to_wait_for=self.configuration['auth']['username'].upper())
 
     def testLogoutAction(self):
         """
