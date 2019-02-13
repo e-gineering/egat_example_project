@@ -16,4 +16,4 @@ class LoginIndex(PageModel):
         submit_button.click()
 
     def logout(self):
-        self.browser.find_element_by_link_text("Log out").click()
+        self.browser.find_element_by_link_text("LOG OUT").click()

@@ -28,6 +28,7 @@ class TestOrders(testset.SequentialTestSet):
     @OrderListResource.decorator
     def testCreateOrder(self):
         status = self.configuration['order_tests']['status']
+        customer_id = self.configuration['order_tests']['customer_id']
         customer_name = self.configuration['order_tests']['customer_name']
         product_id = self.configuration['order_tests']['product_id']
         product_name = self.configuration['order_tests']['product_name']
@@ -41,7 +42,7 @@ class TestOrders(testset.SequentialTestSet):
         # Fill the form and submit it
         target_url = self.configuration['base_url'] + "/admin/order_manager/order/add/"
         create_page = OrderCreate(self.browser, target_url)
-        create_page.fill_form(product_id, product_id, quantity, status)
+        create_page.fill_form(customer_id, product_id, quantity, status)
         create_page.submit_form()
 
         # Verify that a new order was created
