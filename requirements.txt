@@ -1,4 +1,4 @@
-Django==1.11.23
+Django==1.11.29
 egat==1.0.1
 selenium==3.141.0
 wsgiref==0.1.2
